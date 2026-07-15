@@ -9,7 +9,7 @@ const SectionHeader = ({ title, subtitle, className = '' }) => {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 relative inline-block">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 relative inline-block">
           {title}
           <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-16 h-1 bg-accent-500 rounded-full" />
         </h2>

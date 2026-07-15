@@ -43,28 +43,24 @@ const Navbar = () => {
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? 'bg-white/80 dark:bg-dark-bg/80 backdrop-blur-xl shadow-lg border-b border-white/20 dark:border-dark-border'
-          : 'bg-transparent'
+          ? 'bg-white shadow-lg border-b border-gray-200'
+          : 'bg-white shadow-sm'
       }`}
     >
       <div className="container-custom">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <img
               src={logoImage}
               alt="Royal Blue PG logo"
-              className="w-12 h-12 rounded-xl object-cover shadow-lg ring-2 ring-white/20"
+              className="w-10 h-10 rounded-xl object-cover shadow-lg ring-2 ring-white/20"
             />
             <div>
-              <h1 className={`text-xl font-bold tracking-tight transition-colors duration-300 ${
-                isScrolled ? 'text-primary-600 dark:text-white' : 'text-gray-900 dark:text-white'
-              }`}>
+              <h1 className="text-xl font-bold tracking-tight text-gray-900">
                 Royal Blue
               </h1>
-              <p className={`text-xs -mt-1 transition-colors duration-300 ${
-                isScrolled ? 'text-accent-500' : 'text-gray-700 dark:text-accent-300'
-              }`}>
+              <p className="text-xs -mt-1 text-gray-700">
                 Premium PG
               </p>
             </div>
@@ -77,11 +73,7 @@ const Navbar = () => {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-primary-500/10 ${
-                  isScrolled
-                    ? 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'
-                    : 'text-gray-900 hover:text-primary-600 hover:bg-primary-500/10'
-                }`}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-500/10 transition-all duration-300"
               >
                 {link.name}
               </a>
@@ -93,11 +85,7 @@ const Navbar = () => {
             {/* Dark mode toggle */}
             <button
               onClick={toggleDarkMode}
-              className={`p-2.5 rounded-xl transition-all duration-300 ${
-                isScrolled
-                  ? 'bg-gray-100 dark:bg-dark-card text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-border'
-                  : 'bg-white/10 text-white hover:bg-white/20'
-              }`}
+              className="p-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-300"
               aria-label="Toggle dark mode"
             >
               {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
@@ -114,11 +102,7 @@ const Navbar = () => {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`lg:hidden p-2.5 rounded-xl transition-all duration-300 ${
-                isScrolled
-                  ? 'bg-gray-100 dark:bg-dark-card text-gray-600 dark:text-gray-300'
-                  : 'bg-white/10 text-white'
-              }`}
+              className="lg:hidden p-2.5 rounded-xl bg-gray-100 text-gray-700"
               aria-label="Toggle menu"
             >
               {isOpen ? <HiX size={22} /> : <HiMenu size={22} />}

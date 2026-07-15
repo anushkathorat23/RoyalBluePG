@@ -38,16 +38,6 @@ const validateEnquiry = [
     .optional()
     .isIn(['Student', 'Working Professional', 'Other'])
     .withMessage('Invalid occupation'),
-  body('roomPreference')
-    .optional({ checkFalsy: true })
-    .isIn(['Double Sharing', 'Triple Sharing', 'Premium AC Room', 'Any'])
-    .withMessage('Invalid room preference'),
-  body('moveInDate')
-    .optional({ checkFalsy: true })
-    .isISO8601()
-    .withMessage('Move-in date must be a valid date')
-    .toDate(),
-  trimOptionalString('duration', 50),
   trimOptionalString('message', 1000),
   body('privacyPolicy').optional().isBoolean().withMessage('Privacy policy must be true or false').toBoolean(),
   handleValidationErrors,

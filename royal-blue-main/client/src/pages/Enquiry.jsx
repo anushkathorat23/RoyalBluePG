@@ -14,9 +14,6 @@ const enquirySchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
   college: Yup.string(),
   occupation: Yup.string().required('Please select occupation'),
-  roomPreference: Yup.string().required('Please select room preference'),
-  moveInDate: Yup.date().required('Move-in date is required').min(new Date(), 'Date cannot be in the past'),
-  duration: Yup.string().required('Please specify duration'),
   message: Yup.string(),
   privacyPolicy: Yup.boolean().oneOf([true], 'You must accept the privacy policy'),
 });
@@ -27,8 +24,7 @@ const Enquiry = () => {
   const formik = useFormik({
     initialValues: {
       fullName: '', phone: '', email: '', college: '',
-      occupation: 'Student', roomPreference: '',
-      moveInDate: '', duration: '', message: '', privacyPolicy: false
+      occupation: 'Student', message: '', privacyPolicy: false
     },
     validationSchema: enquirySchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
@@ -37,7 +33,8 @@ const Enquiry = () => {
         setIsSuccess(true);
         resetForm();
       } catch (error) {
-        toast.error('Failed to submit enquiry. Please try again.');
+        const message = error?.response?.data?.message || 'Failed to submit enquiry. Please try again.';
+        toast.error(message);
       } finally {
         setSubmitting(false);
       }
@@ -142,60 +139,14 @@ const Enquiry = () => {
                   </div>
                 </div>
 
-                <h3 className="text-xl font-semibold mt-10 mb-6 pb-2 border-b border-gray-100 dark:border-dark-border text-gray-800 dark:text-white">
-                  Stay Details
-                </h3>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Room Preference *</label>
-                    <select
-                      name="roomPreference"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-bg focus:ring-2 focus:ring-primary-500 outline-none transition-all dark:text-white"
-                      {...formik.getFieldProps('roomPreference')}
-                    >
-                      <option value="">Select Room Type</option>
-                      <option value="Double Sharing">Double Sharing Room</option>
-                      <option value="Triple Sharing">Triple Sharing Room</option>
-                      <option value="Premium AC Room">Premium AC Room</option>
-                      <option value="Any">Not Sure Yet</option>
-                    </select>
-                    {formik.touched.roomPreference && formik.errors.roomPreference && <div className="text-red-500 text-xs mt-1">{formik.errors.roomPreference}</div>}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expected Move-in Date *</label>
-                    <input
-                      type="date"
-                      name="moveInDate"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-bg focus:ring-2 focus:ring-primary-500 outline-none transition-all dark:text-white"
-                      {...formik.getFieldProps('moveInDate')}
-                    />
-                    {formik.touched.moveInDate && formik.errors.moveInDate && <div className="text-red-500 text-xs mt-1">{formik.errors.moveInDate}</div>}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Duration of Stay *</label>
-                    <select
-                      name="duration"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-bg focus:ring-2 focus:ring-primary-500 outline-none transition-all dark:text-white"
-                      {...formik.getFieldProps('duration')}
-                    >
-                      <option value="">Select Duration</option>
-                      <option value="1-3 Months">1-3 Months</option>
-                      <option value="3-6 Months">3-6 Months</option>
-                      <option value="6-11 Months">6-11 Months</option>
-                      <option value="1 Year+">1 Year or more</option>
-                    </select>
-                    {formik.touched.duration && formik.errors.duration && <div className="text-red-500 text-xs mt-1">{formik.errors.duration}</div>}
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Additional Message / Special Request</label>
-                    <textarea
-                      name="message"
-                      rows="4"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-bg focus:ring-2 focus:ring-primary-500 outline-none transition-all dark:text-white resize-none"
-                      {...formik.getFieldProps('message')}
-                    ></textarea>
-                  </div>
+                <div className="mt-8">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Additional Message / Special Request</label>
+                  <textarea
+                    name="message"
+                    rows="4"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-bg focus:ring-2 focus:ring-primary-500 outline-none transition-all dark:text-white resize-none"
+                    {...formik.getFieldProps('message')}
+                  ></textarea>
                 </div>
 
                 <div className="mt-8">

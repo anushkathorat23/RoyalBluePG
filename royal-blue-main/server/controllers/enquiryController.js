@@ -1,4 +1,5 @@
 const Enquiry = require('../models/Enquiry');
+const Content = require('../models/Content');
 const transporter = require('../config/email');
 
 const escapeHtml = (value) => String(value ?? '')
@@ -23,27 +24,36 @@ exports.submitEnquiry = async (req, res) => {
   try {
     const enquiry = await Enquiry.create(req.validatedBody || req.body);
 
-    // Send email notification to admin (non-blocking)
+    const contactContent = await Content.findOne({ section: 'contact', key: 'email' });
+    const recipientEmail = contactContent?.value || process.env.ADMIN_EMAIL;
+
+    // Send email notification to the configured contact address (non-blocking)
     try {
       await transporter.sendMail({
         from: `"Royal Blue PG" <${process.env.SMTP_USER}>`,
-        to: process.env.ADMIN_EMAIL,
+        to: recipientEmail,
         subject: `New Enquiry from ${enquiry.fullName}`,
         html: `
-          <h2>New Enquiry Received</h2>
-          <p><strong>Name:</strong> ${escapeHtml(enquiry.fullName)}</p>
-          <p><strong>Phone:</strong> ${escapeHtml(enquiry.phone)}</p>
-          <p><strong>Email:</strong> ${escapeHtml(enquiry.email)}</p>
-          <p><strong>College/Company:</strong> ${escapeHtml(enquiry.college || 'N/A')}</p>
-          <p><strong>Occupation:</strong> ${escapeHtml(enquiry.occupation)}</p>
-          <p><strong>Room Preference:</strong> ${escapeHtml(enquiry.roomPreference || 'N/A')}</p>
-          <p><strong>Move-in Date:</strong> ${escapeHtml(enquiry.moveInDate || 'N/A')}</p>
-          <p><strong>Duration:</strong> ${escapeHtml(enquiry.duration || 'N/A')}</p>
-          <p><strong>Message:</strong> ${escapeHtml(enquiry.message || 'N/A')}</p>
+          <p>Hello,</p>
+          <p>You have received a new enquiry through the Royal Blue PG website. The details are as follows:</p>
+          <ul>
+            <li><strong>Name:</strong> ${escapeHtml(enquiry.fullName)}</li>
+            <li><strong>Email:</strong> ${escapeHtml(enquiry.email)}</li>
+            <li><strong>Phone Number:</strong> ${escapeHtml(enquiry.phone)}</li>
+            <li><strong>College Name:</strong> ${escapeHtml(enquiry.college || 'N/A')}</li>
+            <li><strong>Additional Message:</strong> ${escapeHtml(enquiry.message || 'N/A')}</li>
+          </ul>
+          <p>Please review the enquiry and contact the customer at your earliest convenience to provide further information regarding accommodation availability, facilities, pricing, and the admission process.</p>
+          <p>Thank you.</p>
+          <p>
+            Best Regards,<br/>
+            Royal Blue PG Website<br/>
+            <em>Automated Enquiry Notification.</em>
+          </p>
         `,
       });
     } catch (emailError) {
-      console.log('Email notification failed:', emailError.message);
+      console.error('Email notification failed:', emailError.message, emailError);
     }
 
     res.status(201).json({ success: true, message: 'Enquiry submitted successfully', data: enquiry });

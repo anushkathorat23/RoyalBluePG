@@ -22,7 +22,7 @@ const seedData = async () => {
     // Seed Admin
     await Admin.create({
       username: 'admin',
-      email: 'admin@royalbluepg.com',
+      email: 'kanhakanha1202@gamil.com',
       password: 'admin123',
       role: 'superadmin',
     });
@@ -77,14 +77,14 @@ const seedData = async () => {
       { section: 'about', key: 'content', value: 'Royal Blue PG provides premium accommodation exclusively for girls. We focus on safety, hygiene, comfort, and a peaceful environment for students and working professionals. Our rooms are well maintained with modern amenities and 24×7 security.' },
       { section: 'contact', key: 'phone', value: '+91 98765 43210' },
       { section: 'contact', key: 'whatsapp', value: '+91 98765 43210' },
-      { section: 'contact', key: 'email', value: 'info@royalbluepg.com' },
+      { section: 'contact', key: 'email', value: 'kanhakanha1202@gamil.com' },
       { section: 'contact', key: 'address', value: '123, Royal Blue Building, Near ABC College, Sector 15, New Delhi - 110001' },
       { section: 'contact', key: 'hours', value: 'Mon - Sat: 9:00 AM - 7:00 PM | Sunday: 10:00 AM - 5:00 PM' },
     ]);
     console.log('✅ Content seeded');
 
     console.log('\n🎉 Database seeded successfully!');
-    console.log('Admin credentials: admin@royalbluepg.com / admin123');
+    console.log('Admin credentials: kanhakanha1202@gamil.com / admin123');
     process.exit(0);
   } catch (error) {
     console.error('Seeding error:', error);

@@ -39,7 +39,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-premium"
+            className="text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight drop-shadow-premium"
           >
             ROYAL BLUE <span className="text-accent-500">PG</span>
           </motion.h1>
@@ -48,7 +48,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl font-light"
+            className="text-2xl md:text-3xl text-gray-200 mb-10 max-w-2xl font-light"
           >
             Premium Girls Hostel with Safe, Comfortable & Affordable Living.
           </motion.p>

@@ -36,6 +36,22 @@ app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Royal Blue PG API is running', timestamp: new Date() });
 });
 
+// Test email route (remove after testing)
+app.get('/api/test-email', async (req, res) => {
+  try {
+    const transporter = require('./config/email');
+    await transporter.sendMail({
+      from: `"Royal Blue PG" <${process.env.SMTP_USER}>`,
+      to: process.env.ADMIN_EMAIL,
+      subject: 'Test Email - Royal Blue PG',
+      html: '<p>Email is working correctly!</p>',
+    });
+    res.json({ success: true, message: `Test email sent to ${process.env.ADMIN_EMAIL}` });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // Error handler
 app.use(errorHandler);
 
