@@ -1,0 +1,45 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+const path = require('path');
+const connectDB = require('./config/db');
+const errorHandler = require('./middleware/errorHandler');
+
+// Connect to MongoDB
+connectDB();
+
+const app = express();
+
+// Middleware
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
+// Static uploads folder (dev fallback)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/gallery', require('./routes/galleryRoutes'));
+app.use('/api/amenities', require('./routes/amenityRoutes'));
+app.use('/api/enquiries', require('./routes/enquiryRoutes'));
+app.use('/api/testimonials', require('./routes/testimonialRoutes'));
+app.use('/api/faqs', require('./routes/faqRoutes'));
+app.use('/api/content', require('./routes/contentRoutes'));
+
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ success: true, message: 'Royal Blue PG API is running', timestamp: new Date() });
+});
+
+// Error handler
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🏠 Royal Blue PG Server running on port ${PORT}`);
+});
