@@ -1,9 +1,9 @@
 {
   "version": 2,
   "framework": "vite",
-  "installCommand": "cd client && npm install",
-  "buildCommand": "cd client && npm run build",
-  "outputDirectory": "client/dist",
+  "installCommand": "cd royal-blue-main/client && npm install",
+  "buildCommand": "cd royal-blue-main/client && npm run build",
+  "outputDirectory": "royal-blue-main/client/dist",
   "rewrites": [
     {
       "source": "/(.*)",
