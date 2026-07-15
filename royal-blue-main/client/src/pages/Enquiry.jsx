@@ -33,7 +33,7 @@ const Enquiry = () => {
         setIsSuccess(true);
         resetForm();
       } catch (error) {
-        const message = error?.response?.data?.message || 'Failed to submit enquiry. Please try again.';
+        const message = error?.response?.data?.message || 'Failed to submit enquiry. Please try again. Our team will contact you directly if the form is unavailable.';
         toast.error(message);
       } finally {
         setSubmitting(false);

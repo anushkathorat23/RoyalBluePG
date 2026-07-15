@@ -6,6 +6,10 @@
   "outputDirectory": "royal-blue-main/client/dist",
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "/api/enquiries"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
