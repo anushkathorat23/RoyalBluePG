@@ -1,0 +1,55 @@
+const express = require('express');
+const cors = require('cors');
+
+const mongoose = require('mongoose');
+
+let cached = global.mongoose;
+if (!cached) cached = global.mongoose = { conn: null, promise: null };
+
+function connectDB() {
+  if (cached.conn) return Promise.resolve(cached.conn);
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 25000,
+      connectTimeoutMS: 25000,
+    }).then((conn) => { cached.conn = conn; return conn; });
+  }
+  return cached.promise;
+}
+
+// Start connecting immediately at module load (warm up on cold start)
+connectDB().catch((err) => console.error('Initial DB connect error:', err.message));
+
+const app = express();
+app.use(cors({ origin: process.env.CLIENT_URL || true, credentials: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Database connection failed: ' + err.message });
+  }
+});
+
+app.get('/api/debug', (req, res) => {
+  res.json({ state: mongoose.connection.readyState, hasUri: !!process.env.MONGO_URI });
+});
+
+app.use('/api/auth',         require('../server/src/routes/authRoutes'));
+app.use('/api/gallery',      require('../server/src/routes/galleryRoutes'));
+app.use('/api/amenities',    require('../server/src/routes/amenityRoutes'));
+app.use('/api/enquiries',    require('../server/src/routes/enquiryRoutes'));
+app.use('/api/testimonials', require('../server/src/routes/testimonialRoutes'));
+app.use('/api/faqs',         require('../server/src/routes/faqRoutes'));
+app.use('/api/content',      require('../server/src/routes/contentRoutes'));
+
+app.get('/api/health', (req, res) => {
+  res.json({ success: true, message: 'Royal Blue PG API is running', timestamp: new Date() });
+});
+
+app.use(require('../royal-blue-main/server/middleware/errorHandler'));
+
+module.exports = app;
